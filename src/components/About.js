@@ -1,0 +1,222 @@
+import { useEffect, useState, useRef } from "react";
+import { useUser } from "./UserContext";
+
+// import "../sample.css"
+
+function About() {
+    // const [user, setUser] = useState(null);
+    // const { userRole, setUserRole } = useUser();
+
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [phone, setPhone] = useState("");
+    const [error, setError] = useState("");
+    // const [password, setPassword] = useState("raj123");
+
+    const [tempEmail, setTempEmail] = useState("");
+    const [tempPhone, setTempPhone] = useState("");
+
+    const emailElement = useRef();
+    const [edit, setEdit] = useState(false);
+
+    function handleEdit() {
+        if (edit) {
+            setEmail(tempEmail);
+            setPhone(tempPhone);
+        }
+
+        setEdit((e) => !e);
+    }
+
+    async function handleDeleteUser() {
+        try {
+            const res = await fetch("http://127.0.0.1:3000/user/delete", {
+                method: "DELETE",
+                credentials: "include"
+            })
+            const data = await res.json();
+            if (!res.ok) {
+                return setError(data.message);
+            }
+            window.location = "/";
+        } catch (err) {
+            
+        }
+    }
+
+    async function editDetails() {
+        if (!email && !phone) {
+            return setError("Email/phone cannot be empty");
+        }
+
+        const role = localStorage.getItem("role");
+        const res = await fetch(`http://127.0.0.1:3000/${role}/edit`, {
+            method: "POST",
+            body: JSON.stringify({
+                email,
+                name,
+                phone,
+            }),
+            credentials: "include",
+            headers: {
+                "Content-type": "application/json",
+            },
+        });
+
+        if (!res.ok) {
+            setEdit(false);
+            return setError("Something went wrong. Try again.");
+        }
+        const d = await res.json();
+        console.log("edit ========= ", d);
+        window.location = "/";
+    }
+
+    // load the user details
+    useEffect(() => {
+        async function fetchUser() {
+            const role = localStorage.getItem("role");
+            const res = await fetch(`http://127.0.0.1:3000/${role}`, {
+                method: "GET",
+                credentials: "include",
+            });
+
+            if (!res.ok) {
+                window.location = "/login";
+                return;
+            }
+
+            const data = await res.json();
+
+            console.log("data = ", data);
+            if (data[role]) {
+                // setUser(data.user);
+
+                setName(data[role].name);
+                setEmail(data[role].email || "");
+                setPhone(data[role].phone || "");
+
+                setTempEmail(data[role].email || "");
+                setTempPhone(data[role].phone || "");
+            }
+        }
+        fetchUser();
+
+        // console.log(user)
+    }, []);
+
+    //focus the input when edit is on
+    useEffect(
+        function () {
+            if (edit) {
+                emailElement.current.focus();
+            }
+        },
+        [edit]
+    );
+
+    return (
+        <section className="about">
+            <div className="container">
+                <div className="about-data">
+                    <h1>Personal Info</h1>
+                    <div className="about-content">
+                        <div className="about__left">
+                            <div className="img"></div>
+                            <p>{name}</p>
+                        </div>
+                        <div className="about__right">
+                            <div className="about__data">
+                                <span className="label">Email</span>
+                                <input
+                                    className="label-data"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    disabled={!edit}
+                                    ref={emailElement}
+                                />
+                            </div>
+                            <div className="about__data">
+                                <span className="label">Phone</span>
+                                <input
+                                    className="label-data"
+                                    value={phone}
+                                    onChange={(e) => setPhone(e.target.value)}
+                                    disabled={!edit}
+                                />
+                            </div>
+                            {error && (
+                                <p
+                                    style={{
+                                        color: "#02fa02",
+                                        fontSize: "1.2rem",
+                                    }}
+                                    className="error"
+                                >
+                                    {error}
+                                </p>
+                            )}
+                            {/* <div className="about__data">
+                                <span className="label">Password</span>
+                                <input
+                                    className="label-data"
+                                    value={password}
+                                    onChange={(e) =>
+                                        setPassword(e.target.value)
+                                    }
+                                    disabled={!edit}
+                                />
+                            </div> */}
+                        </div>
+                    </div>
+
+                    <div className="btn-control">
+                        {!edit ? (
+                            <button
+                                className=""
+                                style={{
+                                    backgroundColor: "rgb(25, 100, 205)",
+                                    color: "white",
+                                    paddingInline: "25px",
+                                    paddingBlock: "8px",
+                                }}
+                                onClick={handleEdit}
+                            >
+                                Edit
+                            </button>
+                        ) : (
+                            <>
+                                <button
+                                    className="primary"
+                                    style={{
+                                        paddingInline: "25px",
+                                        paddingBlock: "8px",
+                                    }}
+                                    onClick={handleEdit}
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    className=""
+                                    style={{
+                                        backgroundColor: "rgb(25, 100, 205)",
+                                        color: "white",
+                                        paddingInline: "25px",
+                                        paddingBlock: "8px",
+                                    }}
+                                    onClick={editDetails}
+                                    // onClick={handleEdit}
+                                >
+                                    Submit
+                                </button>
+                            </>
+                        )}
+                        <button onClick={handleDeleteUser}>Delete</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+}
+
+export default About;
