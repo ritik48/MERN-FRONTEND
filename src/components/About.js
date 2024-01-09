@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { useUser } from "./UserContext";
-
+import uploadImage from "../images/upload2.png";
 // import "../sample.css"
 
 function About() {
@@ -10,37 +9,64 @@ function About() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
+    const [profile, setProfile] = useState();
+
     const [error, setError] = useState("");
     // const [password, setPassword] = useState("raj123");
 
-    const [tempEmail, setTempEmail] = useState("");
-    const [tempPhone, setTempPhone] = useState("");
+    const [tempName, setTempName] = useState("");
 
-    const emailElement = useRef();
+    const nameElement = useRef();
     const [edit, setEdit] = useState(false);
 
     function handleEdit() {
         if (edit) {
-            setEmail(tempEmail);
-            setPhone(tempPhone);
+            setName(tempName);
         }
 
         setEdit((e) => !e);
     }
 
+    // useEffect(() => {
+    //     console.log("Files = ", file);
+    // }, [file]);
+
+    async function updateImage(file) {
+        try {
+            const role = localStorage.getItem("role");
+            const formData = new FormData();
+            formData.append("profile", file);
+            const res = await fetch(`http://127.0.0.1:3000/${role}/image`, {
+                method: "POST",
+                body: formData,
+                credentials: "include",
+            });
+
+            if (!res.ok) {
+                return setError(
+                    "Something wentr wrong, while uploading the image."
+                );
+            }
+            window.location = "/about";
+        } catch (err) {
+            setError("Something went wrong.");
+        }
+    }
+
     async function handleDeleteUser() {
         try {
-            const res = await fetch("http://127.0.0.1:3000/user/delete", {
+            const role = localStorage.getItem("role");
+            const res = await fetch(`http://127.0.0.1:3000/${role}/delete`, {
                 method: "DELETE",
-                credentials: "include"
-            })
+                credentials: "include",
+            });
             const data = await res.json();
             if (!res.ok) {
                 return setError(data.message);
             }
             window.location = "/";
         } catch (err) {
-            
+            return setError(err);
         }
     }
 
@@ -95,9 +121,9 @@ function About() {
                 setName(data[role].name);
                 setEmail(data[role].email || "");
                 setPhone(data[role].phone || "");
+                setProfile(`http://127.0.0.1:3000/images/${data[role].image}`);
 
-                setTempEmail(data[role].email || "");
-                setTempPhone(data[role].phone || "");
+                setTempName(data[role].name);
             }
         }
         fetchUser();
@@ -109,7 +135,7 @@ function About() {
     useEffect(
         function () {
             if (edit) {
-                emailElement.current.focus();
+                nameElement.current.focus();
             }
         },
         [edit]
@@ -122,8 +148,39 @@ function About() {
                     <h1>Personal Info</h1>
                     <div className="about-content">
                         <div className="about__left">
-                            <div className="img"></div>
-                            <p>{name}</p>
+                            <div className="image-container">
+                                <img
+                                    className="img"
+                                    src={`${profile}`}
+                                    alt="profile"
+                                />
+                                <img
+                                    className="overlay-image"
+                                    src={uploadImage}
+                                    alt="overlay"
+                                    onClick={() => {
+                                        document
+                                            .querySelector("#inptag")
+                                            .click();
+                                    }}
+                                />
+                                <input
+                                    type="file"
+                                    id="inptag"
+                                    style={{ display: "none" }}
+                                    onChange={(e) => {
+                                        updateImage(e.target.files[0]);
+                                    }}
+                                />
+                            </div>
+                            <input
+                                className="label-data name"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                disabled={!edit}
+                                ref={nameElement}
+                                style={{ width: "200px" }}
+                            />
                         </div>
                         <div className="about__right">
                             <div className="about__data">
@@ -132,8 +189,6 @@ function About() {
                                     className="label-data"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    disabled={!edit}
-                                    ref={emailElement}
                                 />
                             </div>
                             <div className="about__data">
@@ -142,7 +197,6 @@ function About() {
                                     className="label-data"
                                     value={phone}
                                     onChange={(e) => setPhone(e.target.value)}
-                                    disabled={!edit}
                                 />
                             </div>
                             {error && (

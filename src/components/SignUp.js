@@ -6,6 +6,9 @@ function SignUp() {
     const [phone, setPhone] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const [image, setImage] = useState();
+
+    const [file, setFile] = useState();
 
     async function handleSignup() {
         if (!email && !phone) {
@@ -16,28 +19,33 @@ function SignUp() {
             return setError("Password cannot be empty");
         }
         localStorage.setItem("role", "user");
+
+        const formData = new FormData();
+        formData.append("profile", file);
+
+        if (email) {
+            formData.append("email", email);
+        } else {
+            formData.append("phone", phone);
+        }
+        formData.append("name", name);
+        formData.append("password", password);
+
         const res = await fetch("http://127.0.0.1:3000/user/signup", {
             method: "POST",
-            body: JSON.stringify(
-                email
-                    ? {
-                          name,
-                          email,
-                          password,
-                      }
-                    : { name, phone, password }
-            ),
+            body: formData,
             credentials: "include",
-            headers: {
-                "Content-type": "application/json",
-            },
+            // headers: {
+            //     "Content-type": "application/json",
+            // },
         });
 
         const data = await res.json();
         if (!res.ok) {
             return setError(data.message);
         }
-        console.log("create = ", data);
+        // console.log("create = ", data);
+        setImage(`http://127.0.0.1:3000/images/${data.user.image}`);
         window.location = "/about";
     }
 
@@ -46,6 +54,17 @@ function SignUp() {
             <div className="container">
                 <div className="signup-content">
                     <h2>Create account</h2>
+                    {image && (
+                        <img
+                            style={{ width: "80px", borderRadius: "50%" }}
+                            src={`${image}`}
+                            alt="profile"
+                        />
+                    )}
+                    <input
+                        type="file"
+                        onChange={(e) => setFile(e.target.files[0])}
+                    />
                     <input
                         placeholder="name"
                         onChange={(e) => setName(e.target.value)}

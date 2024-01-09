@@ -29,6 +29,7 @@ function Home() {
 
                 if (!res.ok) {
                     window.location = "/login";
+                    console.log("yesss")
                     return;
                 }
 

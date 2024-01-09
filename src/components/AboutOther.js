@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef } from "react";
-import { useUser } from "./UserContext";
 import { useParams } from "react-router-dom";
-
+import uploadImage from "../images/upload2.png";
 // import "../sample.css"
 
 function About() {
@@ -12,6 +11,7 @@ function About() {
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
     const [error, setError] = useState("");
+    const [profile, setProfile] = useState();
 
     const [tempEmail, setTempEmail] = useState("");
     const [tempPhone, setTempPhone] = useState("");
@@ -34,6 +34,27 @@ function About() {
         }
 
         setEdit((e) => !e);
+    }
+
+    async function updateImage(file) {
+        try {
+            const formaData = new FormData();
+            formaData.append("profile", file);
+
+            const res = await fetch("http://127.0.0.1:3000/admin/", {
+                method: "POST",
+                body: formaData,
+                credentials: "include"
+            });
+
+            if (!res.ok) {
+                return setError("Error updating image");
+            }
+
+            window.location = `/user/${id}`;
+        } catch (err) {
+            setError(err);
+        }
     }
 
     async function editDetails() {
@@ -87,6 +108,9 @@ function About() {
                 setName(data["user"].name);
                 setEmail(data["user"].email || "");
                 setPhone(data["user"].phone || "");
+                setProfile(
+                    `http://127.0.0.1:3000/images/${data["user"].image}`
+                );
 
                 setTempEmail(data["user"].email || "");
                 setTempPhone(data["user"].phone || "");
@@ -135,7 +159,31 @@ function About() {
                     <h1>User Info</h1>
                     <div className="about-content">
                         <div className="about__left">
-                            <div className="img"></div>
+                        <div className="image-container">
+                                <img
+                                    className="img"
+                                    src={`${profile}`}
+                                    alt="profile"
+                                />
+                                <img
+                                    className="overlay-image"
+                                    src={uploadImage}
+                                    alt="overlay"
+                                    onClick={() => {
+                                        document
+                                            .querySelector("#inptag")
+                                            .click();
+                                    }}
+                                />
+                                <input
+                                    type="file"
+                                    id="inptag"
+                                    style={{ display: "none" }}
+                                    onChange={(e) => {
+                                        updateImage(e.target.files[0]);
+                                    }}
+                                />
+                            </div>
                             <p>{name}</p>
                         </div>
                         <div className="about__right">

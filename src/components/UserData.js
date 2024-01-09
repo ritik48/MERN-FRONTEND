@@ -34,6 +34,7 @@ export default function UserList() {
 
     useEffect(() => {
         async function fetchUserData() {
+            
             const res = await fetch("http://127.0.0.1:3000/admin/user-list", {
                 method: "GET",
                 credentials: "include",

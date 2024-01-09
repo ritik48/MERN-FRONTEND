@@ -3,7 +3,8 @@ import { useUser } from "./UserContext";
 
 function NavBar() {
     const [user, setUser] = useState(null);
-    const { userRole, setUserRole } = useUser();
+
+    const currentPage = window.location.pathname;
 
     useEffect(() => {
         async function fetchUser() {
@@ -38,7 +39,7 @@ function NavBar() {
         });
 
         if (res.ok) {
-            window.location = "/login"
+            window.location = "/login";
         }
         // if (res.ok) {
         //     setUser(null);
@@ -51,7 +52,25 @@ function NavBar() {
             <div className="container">
                 <div className="nav-content">
                     <div className="nav__left">
-                        <h2 className="brand">XYZ Co.</h2>
+                        <h2
+                            className="brand"
+                            onClick={() => {
+                                window.location = "/";
+                            }}
+                        >
+                            XYZ Co.
+                        </h2>
+
+                        {user?.role === "Admin" && (
+                            <button
+                                className={`nav-link ${currentPage === '/user-data' ? 'selected' : ''}`}
+                                onClick={() => {
+                                    window.location = "/user-data";
+                                }}
+                            >
+                                User List
+                            </button>
+                        )}
                     </div>
                     <div className="nav__right">
                         {!user ? (
@@ -81,7 +100,10 @@ function NavBar() {
                                 >
                                     Logout
                                 </button>
-                                <div className="user-login" onClick={() => window.location = "/about"}>
+                                <div
+                                    className="user-login"
+                                    onClick={() => (window.location = "/about")}
+                                >
                                     {user?.name[0]}
                                 </div>
                             </>
