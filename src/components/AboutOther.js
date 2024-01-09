@@ -109,7 +109,7 @@ function About() {
                 setEmail(data["user"].email || "");
                 setPhone(data["user"].phone || "");
                 setProfile(
-                    `https://mern-frontend-vert-one.vercel.app/images/${data["user"].image}`
+                    `https://mern-backend-bbv2.onrender.com/images/${data["user"].image}`
                 );
 
                 setTempEmail(data["user"].email || "");

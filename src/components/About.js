@@ -121,7 +121,7 @@ function About() {
                 setName(data[role].name);
                 setEmail(data[role].email || "");
                 setPhone(data[role].phone || "");
-                setProfile(`https://mern-frontend-vert-one.vercel.app/images/${data[role].image}`);
+                setProfile(`https://mern-backend-bbv2.onrender.com/images/${data[role].image}`);
 
                 setTempName(data[role].name);
             }
