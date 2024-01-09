@@ -36,7 +36,7 @@ function About() {
             const role = localStorage.getItem("role");
             const formData = new FormData();
             formData.append("profile", file);
-            const res = await fetch(`http://127.0.0.1:3000/${role}/image`, {
+            const res = await fetch(`/${role}/image`, {
                 method: "POST",
                 body: formData,
                 credentials: "include",
@@ -56,7 +56,7 @@ function About() {
     async function handleDeleteUser() {
         try {
             const role = localStorage.getItem("role");
-            const res = await fetch(`http://127.0.0.1:3000/${role}/delete`, {
+            const res = await fetch(`/${role}/delete`, {
                 method: "DELETE",
                 credentials: "include",
             });
@@ -76,7 +76,7 @@ function About() {
         }
 
         const role = localStorage.getItem("role");
-        const res = await fetch(`http://127.0.0.1:3000/${role}/edit`, {
+        const res = await fetch(`/${role}/edit`, {
             method: "POST",
             body: JSON.stringify({
                 email,
@@ -102,7 +102,7 @@ function About() {
     useEffect(() => {
         async function fetchUser() {
             const role = localStorage.getItem("role");
-            const res = await fetch(`http://127.0.0.1:3000/${role}`, {
+            const res = await fetch(`/${role}`, {
                 method: "GET",
                 credentials: "include",
             });
@@ -121,7 +121,7 @@ function About() {
                 setName(data[role].name);
                 setEmail(data[role].email || "");
                 setPhone(data[role].phone || "");
-                setProfile(`http://127.0.0.1:3000/images/${data[role].image}`);
+                setProfile(`/images/${data[role].image}`);
 
                 setTempName(data[role].name);
             }

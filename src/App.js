@@ -29,7 +29,7 @@ function Home() {
 
                 if (!res.ok) {
                     window.location = "/login";
-                    console.log("yesss")
+                    console.log("yesss");
                     return;
                 }
 
@@ -94,7 +94,7 @@ function App() {
                         <Route path="/login" element={<Login />} />
                         <Route path="/signup" element={<SignUp />} />
                         <Route path="/user-data" element={<UserList />} />
-                        <Route path="/user/:id" element={ <AboutOther />} />
+                        <Route path="/user/:id" element={<AboutOther />} />
                     </Routes>
                 </Router>
             </UserProvider>

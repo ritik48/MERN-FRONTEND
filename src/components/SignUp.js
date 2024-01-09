@@ -31,7 +31,7 @@ function SignUp() {
         formData.append("name", name);
         formData.append("password", password);
 
-        const res = await fetch("http://127.0.0.1:3000/user/signup", {
+        const res = await fetch("/user/signup", {
             method: "POST",
             body: formData,
             credentials: "include",
@@ -45,7 +45,7 @@ function SignUp() {
             return setError(data.message);
         }
         // console.log("create = ", data);
-        setImage(`http://127.0.0.1:3000/images/${data.user.image}`);
+        setImage(`/images/${data.user.image}`);
         window.location = "/about";
     }
 

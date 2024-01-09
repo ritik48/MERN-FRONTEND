@@ -19,7 +19,7 @@ function Login() {
             setError("password is required");
             return;
         }
-        const res = await fetch(`http://127.0.0.1:3000/admin/login`, {
+        const res = await fetch(`/admin/login`, {
             method: "POST",
             credentials: "include",
             body: JSON.stringify(
@@ -55,7 +55,7 @@ function Login() {
             return;
         }
 
-        const res = await fetch(`http://127.0.0.1:3000/user/login`, {
+        const res = await fetch(`/user/login`, {
             method: "POST",
             credentials: "include",
             body: JSON.stringify(

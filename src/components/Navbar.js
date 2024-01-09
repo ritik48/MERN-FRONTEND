@@ -9,22 +9,28 @@ function NavBar() {
     useEffect(() => {
         async function fetchUser() {
             // console.log("nav = ", userRole)
-            const role = localStorage.getItem("role");
-            const res = await fetch(`/${role}`, {
-                method: "GET",
-                credentials: "include",
-            });
-
-            if (!res.ok) {
-                return;
+            try {
+                const role = localStorage.getItem("role");
+                const res = await fetch(`/${role}`, {
+                    method: "GET",
+                    credentials: "include",
+                });
+    
+                const data = await res.json();
+    
+                console.log("data = ", data);
+                if (!res.ok) {
+                    return;
+                }
+    
+                if (data[role]) {
+                    setUser(data[role]);
+                }
+            } catch (error) {
+                console.log(localStorage.getItem("role"))
+                console.log("Nav bar error = ",error)
             }
-
-            const data = await res.json();
-
-            console.log("data = ", data);
-            if (data[role]) {
-                setUser(data[role]);
-            }
+           
         }
         fetchUser();
 

@@ -41,7 +41,7 @@ function About() {
             const formaData = new FormData();
             formaData.append("profile", file);
 
-            const res = await fetch("http://127.0.0.1:3000/admin/", {
+            const res = await fetch("/admin/", {
                 method: "POST",
                 body: formaData,
                 credentials: "include"
@@ -63,7 +63,7 @@ function About() {
         }
 
         // const role = localStorage.getItem("role");
-        const res = await fetch(`http://127.0.0.1:3000/admin/edit/${id}`, {
+        const res = await fetch(`/admin/edit/${id}`, {
             method: "POST",
             body: JSON.stringify({
                 email,
@@ -89,7 +89,7 @@ function About() {
     useEffect(() => {
         async function fetchUser() {
             // const role = localStorage.getItem("role");
-            const res = await fetch(`http://127.0.0.1:3000/admin/user/${id}`, {
+            const res = await fetch(`/admin/user/${id}`, {
                 method: "GET",
                 credentials: "include",
             });
@@ -109,7 +109,7 @@ function About() {
                 setEmail(data["user"].email || "");
                 setPhone(data["user"].phone || "");
                 setProfile(
-                    `http://127.0.0.1:3000/images/${data["user"].image}`
+                    `/images/${data["user"].image}`
                 );
 
                 setTempEmail(data["user"].email || "");
@@ -135,7 +135,7 @@ function About() {
     async function handleDeleteUser() {
         try {
             const res = await fetch(
-                `http://127.0.0.1:3000/admin/delete/${id}`,
+                `/admin/delete/${id}`,
                 {
                     method: "DELETE",
                     credentials: "include",
