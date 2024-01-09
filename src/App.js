@@ -22,7 +22,7 @@ function Home() {
         async function fetchUser() {
             try {
                 const role = localStorage.getItem("role");
-                const res = await fetch(`https://mern-backend-bbv2.onrender.com/${role}`, {
+                const res = await fetch(`/${role}`, {
                     method: "GET",
                     credentials: "include",
                 });
