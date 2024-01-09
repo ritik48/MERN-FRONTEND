@@ -8,8 +8,7 @@ import About from "./components/About";
 import UserList from "./components/UserData";
 import AboutOther from "./components/AboutOther";
 
-import AdminLogin from "./components/Admin";
-import { UserProvider, useUser } from "./components/UserContext";
+import { UserProvider } from "./components/UserContext";
 
 function Home() {
     const [user, setUser] = useState(null);

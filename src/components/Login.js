@@ -1,5 +1,4 @@
-import { useEffect, useState, useRef } from "react";
-import { useUser } from "./UserContext";
+import { useState } from "react";
 
 function Login() {
     const [email, setEmail] = useState("");
