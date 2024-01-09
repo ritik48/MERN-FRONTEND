@@ -10,7 +10,7 @@ function NavBar() {
         async function fetchUser() {
             // console.log("nav = ", userRole)
             const role = localStorage.getItem("role");
-            const res = await fetch(`http://127.0.0.1:3000/${role}`, {
+            const res = await fetch(`https://mern-backend-bbv2.onrender.com/${role}`, {
                 method: "GET",
                 credentials: "include",
             });
@@ -33,7 +33,7 @@ function NavBar() {
 
     async function handleLogout() {
         const role = localStorage.getItem("role");
-        const res = await fetch(`http://127.0.0.1:3000/${role}/logout`, {
+        const res = await fetch(`https://mern-backend-bbv2.onrender.com/${role}/logout`, {
             method: "GET",
             credentials: "include",
         });
