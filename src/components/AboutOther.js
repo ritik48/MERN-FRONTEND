@@ -41,7 +41,7 @@ function About() {
             const formaData = new FormData();
             formaData.append("profile", file);
 
-            const res = await fetch("/admin/", {
+            const res = await fetch("https://mern-backend-bbv2.onrender.com/admin/", {
                 method: "POST",
                 body: formaData,
                 credentials: "include"
@@ -63,7 +63,7 @@ function About() {
         }
 
         // const role = localStorage.getItem("role");
-        const res = await fetch(`/admin/edit/${id}`, {
+        const res = await fetch(`https://mern-backend-bbv2.onrender.com/admin/edit/${id}`, {
             method: "POST",
             body: JSON.stringify({
                 email,
@@ -89,7 +89,7 @@ function About() {
     useEffect(() => {
         async function fetchUser() {
             // const role = localStorage.getItem("role");
-            const res = await fetch(`/admin/user/${id}`, {
+            const res = await fetch(`https://mern-backend-bbv2.onrender.com/admin/user/${id}`, {
                 method: "GET",
                 credentials: "include",
             });
@@ -135,7 +135,7 @@ function About() {
     async function handleDeleteUser() {
         try {
             const res = await fetch(
-                `/admin/delete/${id}`,
+                `https://mern-backend-bbv2.onrender.com/admin/delete/${id}`,
                 {
                     method: "DELETE",
                     credentials: "include",

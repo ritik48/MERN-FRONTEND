@@ -35,7 +35,7 @@ export default function UserList() {
     useEffect(() => {
         async function fetchUserData() {
             
-            const res = await fetch("/admin/user-list", {
+            const res = await fetch("https://mern-backend-bbv2.onrender.com/admin/user-list", {
                 method: "GET",
                 credentials: "include",
             });

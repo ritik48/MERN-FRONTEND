@@ -36,7 +36,7 @@ function About() {
             const role = localStorage.getItem("role");
             const formData = new FormData();
             formData.append("profile", file);
-            const res = await fetch(`/${role}/image`, {
+            const res = await fetch(`https://mern-backend-bbv2.onrender.com/${role}/image`, {
                 method: "POST",
                 body: formData,
                 credentials: "include",
@@ -56,7 +56,7 @@ function About() {
     async function handleDeleteUser() {
         try {
             const role = localStorage.getItem("role");
-            const res = await fetch(`/${role}/delete`, {
+            const res = await fetch(`https://mern-backend-bbv2.onrender.com/${role}/delete`, {
                 method: "DELETE",
                 credentials: "include",
             });
@@ -76,7 +76,7 @@ function About() {
         }
 
         const role = localStorage.getItem("role");
-        const res = await fetch(`/${role}/edit`, {
+        const res = await fetch(`https://mern-backend-bbv2.onrender.com/${role}/edit`, {
             method: "POST",
             body: JSON.stringify({
                 email,
@@ -102,7 +102,7 @@ function About() {
     useEffect(() => {
         async function fetchUser() {
             const role = localStorage.getItem("role");
-            const res = await fetch(`/${role}`, {
+            const res = await fetch(`https://mern-backend-bbv2.onrender.com/${role}`, {
                 method: "GET",
                 credentials: "include",
             });

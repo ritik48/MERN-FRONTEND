@@ -18,7 +18,7 @@ function Login() {
             setError("password is required");
             return;
         }
-        const res = await fetch(`/admin/login`, {
+        const res = await fetch(`https://mern-backend-bbv2.onrender.com/admin/login`, {
             method: "POST",
             credentials: "include",
             body: JSON.stringify(
@@ -54,7 +54,7 @@ function Login() {
             return;
         }
 
-        const res = await fetch(`/user/login`, {
+        const res = await fetch(`https://mern-backend-bbv2.onrender.com/user/login`, {
             method: "POST",
             credentials: "include",
             body: JSON.stringify(

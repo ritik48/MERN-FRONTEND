@@ -31,7 +31,7 @@ function SignUp() {
         formData.append("name", name);
         formData.append("password", password);
 
-        const res = await fetch("/user/signup", {
+        const res = await fetch("https://mern-backend-bbv2.onrender.com/user/signup", {
             method: "POST",
             body: formData,
             credentials: "include",

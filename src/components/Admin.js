@@ -16,7 +16,7 @@ function AdminLogin() {
             return;
         }
 
-        const res = await fetch("/admin/login", {
+        const res = await fetch("https://mern-backend-bbv2.onrender.com/admin/login", {
             method: "POST",
             credentials: "include",
             body: JSON.stringify(
