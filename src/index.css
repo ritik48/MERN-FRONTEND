@@ -364,6 +364,7 @@ h2.brand {
     display: flex;
     align-items: center;
     gap: 20px;
+    color: rgb(241, 240, 240) !important;
 }
 .gicon {
     width: 30px;
