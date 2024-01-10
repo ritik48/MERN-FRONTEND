@@ -342,7 +342,7 @@ h2.brand {
     transform: translate(-50%, -50%);
 }
 
-.footer-content {
+.footer {
     color: rgb(241, 240, 240);
     /* position: absolute;
     bottom: 0;
@@ -357,6 +357,7 @@ h2.brand {
 
     padding: 10px;
     margin-top: auto !important;
+    width: 100%;
 }
 .gicon {
     width: 30px;
