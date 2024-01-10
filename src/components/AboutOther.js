@@ -13,19 +13,17 @@ function About() {
     const [error, setError] = useState("");
     const [profile, setProfile] = useState();
 
-    const [tempEmail, setTempEmail] = useState("");
-    const [tempPhone, setTempPhone] = useState("");
+    const [tempName, setTempName] = useState("");
 
     const { id } = useParams();
     console.log("idddd = ", id);
     // const [password, setPassword] = useState("raj123");
 
-    const emailElement = useRef();
+    const nameElement = useRef();
     const [edit, setEdit] = useState(false);
 
     function resetData() {
-        setEmail(tempEmail);
-        setPhone(tempPhone);
+        setName(tempName);
     }
 
     function handleEdit() {
@@ -41,11 +39,14 @@ function About() {
             const formaData = new FormData();
             formaData.append("profile", file);
 
-            const res = await fetch("https://mern-backend-bbv2.onrender.com/admin/", {
-                method: "POST",
-                body: formaData,
-                credentials: "include"
-            });
+            const res = await fetch(
+                "https://mern-backend-bbv2.onrender.com/admin/",
+                {
+                    method: "POST",
+                    body: formaData,
+                    credentials: "include",
+                }
+            );
 
             if (!res.ok) {
                 return setError("Error updating image");
@@ -63,35 +64,40 @@ function About() {
         }
 
         // const role = localStorage.getItem("role");
-        const res = await fetch(`https://mern-backend-bbv2.onrender.com/admin/edit/${id}`, {
-            method: "POST",
-            body: JSON.stringify({
-                email,
-                name,
-                phone,
-            }),
-            credentials: "include",
-            headers: {
-                "Content-type": "application/json",
-            },
-        });
+        const res = await fetch(
+            `https://mern-backend-bbv2.onrender.com/admin/edit/${id}`,
+            {
+                method: "POST",
+                body: JSON.stringify({
+                    email,
+                    name,
+                    phone,
+                }),
+                credentials: "include",
+                headers: {
+                    "Content-type": "application/json",
+                },
+            }
+        );
 
         if (!res.ok) {
             setEdit(false);
             return setError("Something went wrong. Try again.");
         }
         const d = await res.json();
-        console.log("edit ========= ", d);
         window.location = "/user-data";
     }
 
     // load the user details
     useEffect(() => {
         async function fetchUser() {
-            const res = await fetch(`https://mern-backend-bbv2.onrender.com/admin/user/${id}`, {
-                method: "GET",
-                credentials: "include",
-            });
+            const res = await fetch(
+                `https://mern-backend-bbv2.onrender.com/admin/user/${id}`,
+                {
+                    method: "GET",
+                    credentials: "include",
+                }
+            );
 
             if (!res.ok) {
                 window.location = "/user-data";
@@ -109,8 +115,8 @@ function About() {
                     `https://mern-backend-bbv2.onrender.com/images/${data["user"].image}`
                 );
 
-                setTempEmail(data["user"].email || "");
-                setTempPhone(data["user"].phone || "");
+                setTempName(data["user"].name);
+              
             }
         }
         fetchUser();
@@ -122,7 +128,7 @@ function About() {
     useEffect(
         function () {
             if (edit) {
-                emailElement.current.focus();
+                nameElement.current.focus();
             }
         },
         [edit]
@@ -156,7 +162,7 @@ function About() {
                     <h1>User Info</h1>
                     <div className="about-content">
                         <div className="about__left">
-                        <div className="image-container">
+                            <div className="image-container">
                                 <img
                                     className="img"
                                     src={`${profile}`}
@@ -181,7 +187,13 @@ function About() {
                                     }}
                                 />
                             </div>
-                            <p>{name}</p>
+                            <input
+                                    className="label-data"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    disabled={!edit}
+                                    ref={nameElement}
+                                />
                         </div>
                         <div className="about__right">
                             <div className="about__data">
@@ -190,8 +202,8 @@ function About() {
                                     className="label-data"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    disabled={!edit}
-                                    ref={emailElement}
+                                    disabled
+                                    
                                 />
                             </div>
                             <div className="about__data">
@@ -200,7 +212,7 @@ function About() {
                                     className="label-data"
                                     value={phone}
                                     onChange={(e) => setPhone(e.target.value)}
-                                    disabled={!edit}
+                                    disabled
                                 />
                             </div>
                             {error && (
