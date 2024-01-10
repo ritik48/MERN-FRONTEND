@@ -40,7 +40,7 @@ function About() {
             formaData.append("profile", file);
 
             const res = await fetch(
-                `https://mern-backend-bbv2.onrender.com/admin/image${id}`,
+                `https://mern-backend-bbv2.onrender.com/admin/image/${id}`,
                 {
                     method: "POST",
                     body: formaData,
