@@ -397,7 +397,7 @@ h2.brand {
     .home__content {
         color: #ece8e8;
         font-size: 1rem;
-        margin: -90px auto 0;
+        margin: 30px auto;
         text-align: center;
     }
     .about-content {
