@@ -88,7 +88,6 @@ function About() {
     // load the user details
     useEffect(() => {
         async function fetchUser() {
-            // const role = localStorage.getItem("role");
             const res = await fetch(`https://mern-backend-bbv2.onrender.com/admin/user/${id}`, {
                 method: "GET",
                 credentials: "include",
@@ -100,8 +99,6 @@ function About() {
             }
 
             const data = await res.json();
-
-            console.log("data = ", data);
             if (data["user"]) {
                 // setUser(data.user);
 

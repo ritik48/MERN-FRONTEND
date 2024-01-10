@@ -27,13 +27,10 @@ function NavBar() {
                 }
             } catch (error) {
                 console.log(localStorage.getItem("role"))
-                console.log("Nav bar error = ",error)
             }
            
         }
         fetchUser();
-
-        // console.log(user)
     }, []);
 
     async function handleLogout() {
@@ -46,10 +43,6 @@ function NavBar() {
         if (res.ok) {
             window.location = "/login";
         }
-        // if (res.ok) {
-        //     setUser(null);
-        //     window.location = "/login";
-        // }
     }
 
     return (

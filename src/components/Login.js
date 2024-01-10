@@ -24,21 +24,24 @@ function Login() {
                 return;
             }
 
-            const res = await fetch(`https://mern-backend-bbv2.onrender.com/admin/login`, {
-                method: "POST",
-                credentials: "include",
-                body: JSON.stringify(
-                    email
-                        ? {
-                              email: email,
-                              password: password,
-                          }
-                        : { phone, password }
-                ),
-                headers: {
-                    "Content-type": "application/json",
-                },
-            });
+            const res = await fetch(
+                `https://mern-backend-bbv2.onrender.com/admin/login`,
+                {
+                    method: "POST",
+                    credentials: "include",
+                    body: JSON.stringify(
+                        email
+                            ? {
+                                  email: email,
+                                  password: password,
+                              }
+                            : { phone, password }
+                    ),
+                    headers: {
+                        "Content-type": "application/json",
+                    },
+                }
+            );
 
             const data = await res.json();
             if (!res.ok) {
@@ -66,21 +69,24 @@ function Login() {
                 return;
             }
 
-            const res = await fetch(`https://mern-backend-bbv2.onrender.com/user/login`, {
-                method: "POST",
-                credentials: "include",
-                body: JSON.stringify(
-                    email
-                        ? {
-                              email: email,
-                              password: password,
-                          }
-                        : { phone, password }
-                ),
-                headers: {
-                    "Content-type": "application/json",
-                },
-            });
+            const res = await fetch(
+                `https://mern-backend-bbv2.onrender.com/user/login`,
+                {
+                    method: "POST",
+                    credentials: "include",
+                    body: JSON.stringify(
+                        email
+                            ? {
+                                  email: email,
+                                  password: password,
+                              }
+                            : { phone, password }
+                    ),
+                    headers: {
+                        "Content-type": "application/json",
+                    },
+                }
+            );
 
             const data = await res.json();
             if (!res.ok) {
@@ -95,41 +101,6 @@ function Login() {
             setIsLoading(false);
         }
     }
-
-    // async function handleAdminLogin() {
-    //     if (!phone && !email) {
-    //         console.log("yesssssssss");
-    //         setError("Email/phone is required");
-    //         return;
-    //     }
-    //     if (!password) {
-    //         setError("password is required");
-    //         return;
-    //     }
-
-    //     const res = await fetch("http://127.0.0.1:3000/admin/login", {
-    //         method: "POST",
-    //         credentials: "include",
-    //         body: JSON.stringify(
-    //             email
-    //                 ? {
-    //                       email: email,
-    //                       password: password,
-    //                   }
-    //                 : { phone, password }
-    //         ),
-    //         headers: {
-    //             "Content-type": "application/json",
-    //         },
-    //     });
-
-    //     const data = await res.json();
-    //     if (!res.ok) {
-    //         return setError(data.message);
-    //     }
-
-    //     window.location = "/";
-    // }
 
     return (
         <section className="signup">
@@ -175,6 +146,9 @@ function Login() {
                             >
                                 Login as Admin
                             </button>
+                            <p style={{ color: "green" }}>
+                                Admin credential: admin@gmail.com adminpass
+                            </p>
                         </>
                     )}
                 </div>
