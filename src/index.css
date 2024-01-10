@@ -128,7 +128,7 @@ h2.brand {
 /* ============ Signup =========== */
 
 .signup {
-    margin-top: 0px;
+    margin-top: 30px;
 }
 
 .signup-content {
@@ -358,6 +358,12 @@ h2.brand {
     padding: 10px;
     margin-top: auto !important;
     width: 100%;
+}
+
+.footer-content {
+    display: flex;
+    align-items: center;
+    gap: 20px;
 }
 .gicon {
     width: 30px;
