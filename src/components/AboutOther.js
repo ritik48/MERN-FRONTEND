@@ -40,7 +40,7 @@ function About() {
             formaData.append("profile", file);
 
             const res = await fetch(
-                "https://mern-backend-bbv2.onrender.com/admin/",
+                `https://mern-backend-bbv2.onrender.com/admin/image${id}`,
                 {
                     method: "POST",
                     body: formaData,
@@ -116,7 +116,6 @@ function About() {
                 );
 
                 setTempName(data["user"].name);
-              
             }
         }
         fetchUser();
@@ -188,12 +187,12 @@ function About() {
                                 />
                             </div>
                             <input
-                                    className="label-data"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                    disabled={!edit}
-                                    ref={nameElement}
-                                />
+                                className="label-data"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                disabled={!edit}
+                                ref={nameElement}
+                            />
                         </div>
                         <div className="about__right">
                             <div className="about__data">
@@ -203,7 +202,6 @@ function About() {
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     disabled
-                                    
                                 />
                             </div>
                             <div className="about__data">
