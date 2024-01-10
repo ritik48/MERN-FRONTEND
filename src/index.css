@@ -8,9 +8,16 @@ body {
     background-color: rgb(26, 26, 26);
 }
 
+#root {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+
+    justify-content: space-between;
+}
+
 .container {
     max-width: 1100px;
-    /* border: 1px solid red; */
 
     margin: 0 auto;
 }
@@ -82,20 +89,20 @@ h2.brand {
 }
 
 .nav-link {
-  margin-inline: 8px;
-  padding: 2px;
-  background-color: transparent;
+    margin-inline: 8px;
+    padding: 2px;
+    background-color: transparent;
 
-  color: white;
+    color: white;
 }
 
 .selected {
-  color: grey;
-  border-bottom: 1px solid grey;
+    color: grey;
+    border-bottom: 1px solid grey;
 }
 
 .nav-link:hover {
-  color: rgb(129, 129, 129);
+    color: rgb(129, 129, 129);
 }
 
 .nav__right {
@@ -121,12 +128,10 @@ h2.brand {
 /* ============ Signup =========== */
 
 .signup {
-    margin-top: 50px;
+    margin-top: -50px;
 }
 
 .signup-content {
-    /* border: 1px solid red; */
-
     margin: 0 auto;
 
     width: 50%;
@@ -144,7 +149,7 @@ h2.brand {
     font-size: 2.5rem;
     color: rgb(215, 215, 215);
 
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 .signup input {
@@ -283,7 +288,6 @@ h2.brand {
 /* ================ user list ================ */
 
 .userlist-content {
-    border: 1px solid red;
 }
 
 .user-item {
@@ -295,7 +299,6 @@ h2.brand {
     color: aliceblue;
     font-size: 1.3rem;
 }
-
 
 /* ============ loading ============  */
 /* 
@@ -331,22 +334,20 @@ h2.brand {
       75%, 100%  {clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,100% 100%,100% 100%)}
   } */
 
-  .spinner {
+.spinner {
     width: 100px;
     position: absolute;
     top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
-  }
+}
 
-
-
-  .footer-content {
+.footer-content {
     color: rgb(241, 240, 240);
-    position: absolute;
+    /* position: absolute;
     bottom: 0;
     left: 0;
-    right: 0;
+    right: 0; */
 
     display: flex;
     justify-content: center;
@@ -355,7 +356,34 @@ h2.brand {
     border: 0.8px solid grey;
 
     padding: 10px;
-  }
-  .gicon {
+    margin-top: auto !important;
+}
+.gicon {
     width: 30px;
-  }
+}
+
+@media screen and (max-width: 700px) {
+    .signup-content {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 370px) {
+    .signup-content {
+        width: 80%;
+    }
+
+    button {
+        border: none;
+        outline: none;
+
+        font-size: 1rem;
+        padding: 0.25em 0.75em;
+        cursor: pointer;
+
+        border-radius: 4px;
+    }
+    h2.brand {
+        font-size: 1.2rem;
+    }
+}
