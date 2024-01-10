@@ -1,5 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
+import Spinner from "./images/infinite-spinner.svg";
+import GithubIcon from "./images/github.svg";
 
 import NavBar from "./components/Navbar";
 import SignUp from "./components/SignUp";
@@ -21,7 +23,7 @@ function Home() {
         async function fetchUser() {
             try {
                 const role = localStorage.getItem("role");
-                const res = await fetch(`https://mern-backend-bbv2.onrender.com/${role}`, {
+                const res = await fetch(`/${role}`, {
                     method: "GET",
                     credentials: "include",
                 });
@@ -52,7 +54,7 @@ function Home() {
             <div className="container">
                 <div className="home__content">
                     {isLoading ? (
-                        <h2>Loading...</h2>
+                        <img src={Spinner} alt="spin" className="spinner" />
                     ) : (
                         <>
                             <h1>
@@ -76,11 +78,23 @@ function Home() {
     );
 }
 
+function Footer() {
+    return (
+        <section className="footer">
+            <div className="container">
+                <a className="footer-content" href="https://github.com/ritik48" target="blank">
+                    <div>Made by <u>Ritik</u></div>
+                    <img src={ GithubIcon } alt="github" className="gicon"/>
+                </a>
+            </div>
+        </section>
+    )
+}
+
 function App() {
-    // const [role, setRole] = useState("user");
-    // if (!localStorage.getItem("role")) {
-    //     localStorage.setItem("role", "user");
-    // }
+    if (!localStorage.getItem("role")) {
+        localStorage.setItem("role", "user");
+    }
     return (
         <>
             <UserProvider>
@@ -96,6 +110,7 @@ function App() {
                         <Route path="/user/:id" element={<AboutOther />} />
                     </Routes>
                 </Router>
+                <Footer />
             </UserProvider>
         </>
     );

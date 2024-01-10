@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "../sample.css";
+import Spinner from "../images/infinite-spinner.svg";
 
 function User({ id, name, email, phone }) {
     // return (
@@ -32,20 +33,29 @@ function User({ id, name, email, phone }) {
 export default function UserList() {
     const [users, setUser] = useState([]);
 
+    const [isLoading, setIsLoading] = useState(false);
+
     useEffect(() => {
         async function fetchUserData() {
-            
-            const res = await fetch("https://mern-backend-bbv2.onrender.com/admin/user-list", {
-                method: "GET",
-                credentials: "include",
-            });
+            setIsLoading(true);
 
-            if (!res.ok) {
-                return (window.location = "/");
+            try {
+                const res = await fetch("https://mern-backend-bbv2.onrender.com/admin/user-list", {
+                    method: "GET",
+                    credentials: "include",
+                });
+
+                if (!res.ok) {
+                    return (window.location = "/");
+                }
+
+                const data = await res.json();
+                setUser(data["user-list"]);
+            } catch (err) {
+                console.log(err);
+            } finally {
+                setIsLoading(false);
             }
-
-            const data = await res.json();
-            setUser(data["user-list"]);
         }
         fetchUserData();
     }, []);
@@ -57,7 +67,10 @@ export default function UserList() {
                     <h1 style={{ color: "wheat", marginBlock: "30px" }}>
                         Employee details
                     </h1>
-                    {users.length > 0 ? (
+
+                    {isLoading ? (
+                        <img src={Spinner} alt="spin" className="spinner" />
+                    ) : users.length > 0 ? (
                         <table className="fl-table">
                             <thead>
                                 <tr>

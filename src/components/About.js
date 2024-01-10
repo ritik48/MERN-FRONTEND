@@ -1,5 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import uploadImage from "../images/upload2.png";
+import Spinner from "../images/infinite-spinner.svg";
+
 // import "../sample.css"
 
 function About() {
@@ -12,6 +14,7 @@ function About() {
     const [profile, setProfile] = useState();
 
     const [error, setError] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
     // const [password, setPassword] = useState("raj123");
 
     const [tempName, setTempName] = useState("");
@@ -55,6 +58,7 @@ function About() {
 
     async function handleDeleteUser() {
         try {
+            setIsLoading(true);
             const role = localStorage.getItem("role");
             const res = await fetch(`https://mern-backend-bbv2.onrender.com/${role}/delete`, {
                 method: "DELETE",
@@ -67,63 +71,79 @@ function About() {
             window.location = "/";
         } catch (err) {
             return setError(err);
+        } finally {
+            setIsLoading(false);
         }
     }
 
     async function editDetails() {
-        if (!email && !phone) {
-            return setError("Email/phone cannot be empty");
-        }
+        try {
+            setIsLoading(true);
+            if (!email && !phone) {
+                return setError("Email/phone cannot be empty");
+            }
 
-        const role = localStorage.getItem("role");
-        const res = await fetch(`https://mern-backend-bbv2.onrender.com/${role}/edit`, {
-            method: "POST",
-            body: JSON.stringify({
-                email,
-                name,
-                phone,
-            }),
-            credentials: "include",
-            headers: {
-                "Content-type": "application/json",
-            },
-        });
+            const role = localStorage.getItem("role");
+            const res = await fetch(`https://mern-backend-bbv2.onrender.com/${role}/edit`, {
+                method: "POST",
+                body: JSON.stringify({
+                    email,
+                    name,
+                    phone,
+                }),
+                credentials: "include",
+                headers: {
+                    "Content-type": "application/json",
+                },
+            });
 
-        if (!res.ok) {
-            setEdit(false);
-            return setError("Something went wrong. Try again.");
+            if (!res.ok) {
+                setEdit(false);
+                return setError("Something went wrong. Try again.");
+            }
+            const d = await res.json();
+            console.log("edit ========= ", d);
+            window.location = "/";
+        } catch (err) {
+            setError(err);
+        } finally {
+            setIsLoading(false);
         }
-        const d = await res.json();
-        console.log("edit ========= ", d);
-        window.location = "/";
     }
 
     // load the user details
     useEffect(() => {
         async function fetchUser() {
-            const role = localStorage.getItem("role");
-            const res = await fetch(`https://mern-backend-bbv2.onrender.com/${role}`, {
-                method: "GET",
-                credentials: "include",
-            });
+            try {
+                setIsLoading(true);
+                const role = localStorage.getItem("role");
+                const res = await fetch(`https://mern-backend-bbv2.onrender.com/${role}`, {
+                    method: "GET",
+                    credentials: "include",
+                });
 
-            if (!res.ok) {
-                window.location = "/login";
-                return;
-            }
+                if (!res.ok) {
+                    window.location = "/login";
+                    return;
+                }
 
-            const data = await res.json();
+                const data = await res.json();
 
-            console.log("data = ", data);
-            if (data[role]) {
-                // setUser(data.user);
+                console.log("data = ", data);
+                if (data[role]) {
+                    // setUser(data.user);
 
-                setName(data[role].name);
-                setEmail(data[role].email || "");
-                setPhone(data[role].phone || "");
-                setProfile(`https://mern-backend-bbv2.onrender.com/images/${data[role].image}`);
+                    setName(data[role].name);
+                    setEmail(data[role].email || "");
+                    setPhone(data[role].phone || "");
+                    setProfile(`https://mern-backend-bbv2.onrender.com/images/${data[role].image}`);
 
-                setTempName(data[role].name);
+                    setTempName(data[role].name);
+                }
+            } catch (err) {
+                setError(err);
+            } finally {
+                setIsLoading(false);
             }
         }
         fetchUser();
@@ -145,72 +165,84 @@ function About() {
         <section className="about">
             <div className="container">
                 <div className="about-data">
-                    <h1>Personal Info</h1>
-                    <div className="about-content">
-                        <div className="about__left">
-                            <div className="image-container">
-                                <img
-                                    className="img"
-                                    src={`${profile}`}
-                                    alt="profile"
-                                />
-                                <img
-                                    className="overlay-image"
-                                    src={uploadImage}
-                                    alt="overlay"
-                                    onClick={() => {
-                                        document
-                                            .querySelector("#inptag")
-                                            .click();
-                                    }}
-                                />
-                                <input
-                                    type="file"
-                                    id="inptag"
-                                    style={{ display: "none" }}
-                                    onChange={(e) => {
-                                        updateImage(e.target.files[0]);
-                                    }}
-                                />
-                            </div>
-                            <input
-                                className="label-data name"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                                disabled={!edit}
-                                ref={nameElement}
-                                style={{ width: "200px" }}
-                            />
-                        </div>
-                        <div className="about__right">
-                            <div className="about__data">
-                                <span className="label">Email</span>
-                                <input
-                                    className="label-data"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                />
-                            </div>
-                            <div className="about__data">
-                                <span className="label">Phone</span>
-                                <input
-                                    className="label-data"
-                                    value={phone}
-                                    onChange={(e) => setPhone(e.target.value)}
-                                />
-                            </div>
-                            {error && (
-                                <p
-                                    style={{
-                                        color: "#02fa02",
-                                        fontSize: "1.2rem",
-                                    }}
-                                    className="error"
-                                >
-                                    {error}
-                                </p>
-                            )}
-                            {/* <div className="about__data">
+                    {isLoading ? (
+                        <img src={Spinner} alt="loading" className="spinner" />
+                    ) : (
+                        <>
+                            <h1>Personal Info</h1>
+                            <div className="about-content">
+                                <div className="about__left">
+                                    <div className="image-container">
+                                        <img
+                                            className="img"
+                                            src={`${profile}`}
+                                            alt="profile"
+                                        />
+                                        <img
+                                            className="overlay-image"
+                                            src={uploadImage}
+                                            alt="overlay"
+                                            onClick={() => {
+                                                document
+                                                    .querySelector("#inptag")
+                                                    .click();
+                                            }}
+                                        />
+                                        <input
+                                            type="file"
+                                            id="inptag"
+                                            style={{ display: "none" }}
+                                            onChange={(e) => {
+                                                updateImage(e.target.files[0]);
+                                            }}
+                                        />
+                                    </div>
+                                    <input
+                                        className="label-data name"
+                                        value={name}
+                                        onChange={(e) =>
+                                            setName(e.target.value)
+                                        }
+                                        disabled={!edit}
+                                        ref={nameElement}
+                                        style={{ width: "200px" }}
+                                    />
+                                </div>
+                                <div className="about__right">
+                                    <div className="about__data">
+                                        <span className="label">Email</span>
+                                        <input
+                                            className="label-data"
+                                            value={email}
+                                            onChange={(e) =>
+                                                setEmail(e.target.value)
+                                            }
+                                                disabled
+                                        />
+                                    </div>
+                                    <div className="about__data">
+                                        <span className="label">Phone</span>
+                                        <input
+                                            className="label-data"
+                                            value={phone}
+                                            onChange={(e) =>
+                                                setPhone(e.target.value)
+                                            }
+                                                disabled
+                                        />
+                                    </div>
+                                    {error && (
+                                        <p
+                                            style={{
+                                                color: "#02fa02",
+                                                fontSize: "1.2rem",
+                                            }}
+                                            className="error"
+                                        >
+                                            {error}
+                                        </p>
+                                    )}
+                                    {/* <div className="about__data">
                                 <span className="label">Password</span>
                                 <input
                                     className="label-data"
@@ -221,52 +253,58 @@ function About() {
                                     disabled={!edit}
                                 />
                             </div> */}
-                        </div>
-                    </div>
+                                </div>
+                            </div>
 
-                    <div className="btn-control">
-                        {!edit ? (
-                            <button
-                                className=""
-                                style={{
-                                    backgroundColor: "rgb(25, 100, 205)",
-                                    color: "white",
-                                    paddingInline: "25px",
-                                    paddingBlock: "8px",
-                                }}
-                                onClick={handleEdit}
-                            >
-                                Edit
-                            </button>
-                        ) : (
-                            <>
-                                <button
-                                    className="primary"
-                                    style={{
-                                        paddingInline: "25px",
-                                        paddingBlock: "8px",
-                                    }}
-                                    onClick={handleEdit}
-                                >
-                                    Cancel
+                            <div className="btn-control">
+                                {!edit ? (
+                                    <button
+                                        className=""
+                                        style={{
+                                            backgroundColor:
+                                                "rgb(25, 100, 205)",
+                                            color: "white",
+                                            paddingInline: "25px",
+                                            paddingBlock: "8px",
+                                        }}
+                                        onClick={handleEdit}
+                                    >
+                                        Edit
+                                    </button>
+                                ) : (
+                                    <>
+                                        <button
+                                            className="primary"
+                                            style={{
+                                                paddingInline: "25px",
+                                                paddingBlock: "8px",
+                                            }}
+                                            onClick={handleEdit}
+                                        >
+                                            Cancel
+                                        </button>
+                                        <button
+                                            className=""
+                                            style={{
+                                                backgroundColor:
+                                                    "rgb(25, 100, 205)",
+                                                color: "white",
+                                                paddingInline: "25px",
+                                                paddingBlock: "8px",
+                                            }}
+                                            onClick={editDetails}
+                                            // onClick={handleEdit}
+                                        >
+                                            Submit
+                                        </button>
+                                    </>
+                                )}
+                                <button onClick={handleDeleteUser}>
+                                    Delete
                                 </button>
-                                <button
-                                    className=""
-                                    style={{
-                                        backgroundColor: "rgb(25, 100, 205)",
-                                        color: "white",
-                                        paddingInline: "25px",
-                                        paddingBlock: "8px",
-                                    }}
-                                    onClick={editDetails}
-                                    // onClick={handleEdit}
-                                >
-                                    Submit
-                                </button>
-                            </>
-                        )}
-                        <button onClick={handleDeleteUser}>Delete</button>
-                    </div>
+                            </div>
+                        </>
+                    )}
                 </div>
             </div>
         </section>
