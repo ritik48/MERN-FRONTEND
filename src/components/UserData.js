@@ -14,7 +14,7 @@ function User({ id, name, email, phone }) {
             <div class="cell" data-title="Phone">
                 {phone || "NA"}
             </div>
-            <div class="cell" data-title="Location">
+            <div class="cell" data-title="View">
                 <button
                     className="primary"
                     onClick={() => (window.location = `/user/${id}`)}
