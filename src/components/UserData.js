@@ -3,30 +3,26 @@ import "../sample.css";
 import Spinner from "../images/infinite-spinner.svg";
 
 function User({ id, name, email, phone }) {
-    // return (
-    //     <div className="user-item">
-    //         <p>{id}</p>
-    //         <p>{name}</p>
-    //         <p>{email}</p>
-    //         <p>{phone || "NA"}</p>
-    //     </div>
-    // );
-
     return (
-        <tr>
-            {/* <td>{id}</td> */}
-            <td>{name}</td>
-            <td>{email || "NA"}</td>
-            <td>{phone || "NA"}</td>
-            <td>
+        <div className="row">
+            <div class="cell" data-title="Name">
+                {name}
+            </div>
+            <div class="cell" data-title="Email">
+                {email || "NA"}
+            </div>
+            <div class="cell" data-title="Phone">
+                {phone || "NA"}
+            </div>
+            <div class="cell" data-title="Location">
                 <button
                     className="primary"
                     onClick={() => (window.location = `/user/${id}`)}
                 >
                     view
                 </button>
-            </td>
-        </tr>
+            </div>
+        </div>
     );
 }
 
@@ -40,10 +36,13 @@ export default function UserList() {
             setIsLoading(true);
 
             try {
-                const res = await fetch("https://mern-backend-bbv2.onrender.com/admin/user-list", {
-                    method: "GET",
-                    credentials: "include",
-                });
+                const res = await fetch(
+                    "https://mern-backend-bbv2.onrender.com/admin/user-list",
+                    {
+                        method: "GET",
+                        credentials: "include",
+                    }
+                );
 
                 if (!res.ok) {
                     return (window.location = "/");
@@ -64,36 +63,24 @@ export default function UserList() {
         <section className="user-list">
             <div className="container">
                 <div className="table-wrapper">
-                    <h1 style={{ color: "wheat", marginBlock: "30px" }}>
-                        Employee details
-                    </h1>
-
                     {isLoading ? (
                         <img src={Spinner} alt="spin" className="spinner" />
                     ) : users.length > 0 ? (
-                        <table className="fl-table">
-                            <thead>
-                                <tr>
-                                    {/* <th>Id</th> */}
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Phone</th>
-                                    <th>View</th>
-                                    {/* <th>Header 5</th> */}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {users.map((user) => (
-                                    <User
-                                        name={user.name}
-                                        email={user.email}
-                                        phone={user.phone}
-                                        id={user._id}
-                                        key={user._id}
-                                    />
-                                ))}
-                            </tbody>
-                        </table>
+                            <div class="wrapper">
+                                <h1 style={{ color: "wheat", marginBlock: "30px" }}>
+                        Employee details
+                    </h1>
+                            <div class="table">
+                                <div class="row header">
+                                    <div className="cell odd">Name</div>
+                                    <div className="cell even">Email</div>
+                                    <div className="cell odd">Phone</div>
+                                    <div className="cell even">View</div>
+                                </div>
+
+                                {users.map(user => <User id = {user._id} name={user.name} email={user.email} phone={user.phone} key={user._id}/>)}
+                            </div>
+                        </div>
                     ) : (
                         <p style={{ color: "white", fontSize: "2rem" }}>
                             No employees to display
@@ -101,7 +88,6 @@ export default function UserList() {
                     )}
                 </div>
 
-                {/* <div className="userlist-content"> */}
             </div>
         </section>
     );
